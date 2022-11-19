@@ -24,31 +24,31 @@ In my case, I tried to keep it simple. In terms of security and governance, I us
 
 Now: how have I implemented it? I had a few constraints as mentioned above. I needed long running and as cheap as possible while testing the technologies that the cloud had to offer. I decided to go with GCP as this was the platform we were using at work at the time. I summarized my thought process in the table below and the result in the diagram below.
 
-|Pipeline Block |What I wanted to achieve | My choices
+|Pipeline Block |What I wanted to achieve | My choices |
 | ---- | ---- | ---- |
-|Ingestion | Ingest data from and API call to the bike sharing company’s open data platform | *Language* : Python. SQL would have been more complicated. I did not master Java or Scala
+|Ingestion | Ingest data from and API call to the bike sharing company’s open data platform | **Language** : Python. SQL would have been more complicated. I did not master Java or Scala
 
-*Compute*: i could run a VM or use serverless compute or include the API as part of a data processing pipeline
+**Compute**: i could run a VM or use serverless compute or include the API as part of a data processing pipeline
 
-*Storage*: Could be cloud storage, database or streaming queue. I chose cloud storage to have a trace of all the API call. I used a datastore (serverless and within the free tier) to collect the station metadata (name, location, …)
+**Storage**: Could be cloud storage, database or streaming queue. I chose cloud storage to have a trace of all the API call. I used a datastore (serverless and within the free tier) to collect the station metadata (name, location, …)
 
-*Orchestration*: airflow would have been too expensive, workflow did not exist. I went with cloud scheduler for all my scheduling |
+**Orchestration**: airflow would have been too expensive, workflow did not exist. I went with cloud scheduler for all my scheduling |
 
 | Clean, Parse,  Enrich | Process the raw data to join bike station status with the station metadata, flatten the schema and append to the global table |
-*Language* : still used Python for consistency
+**Language** : still used Python for consistency
 
-*Compute*: Went for Dataflow for data processing so that I can test scalability and use the capacity to run processing on preemptible instances. I still needed to rely on Cloud Functions for kicking off the jobs
+**Compute**: Went for Dataflow for data processing so that I can test scalability and use the capacity to run processing on preemptible instances. I still needed to rely on Cloud Functions for kicking off the jobs
 
-*Storage* : I duplicated the data in cloud storage to be able to run ML and access data without paying Big Query and I saved data in Big Query too to be able to plug in visualization tool like Power BI or Data Studio.
+**Storage** : I duplicated the data in cloud storage to be able to run ML and access data without paying Big Query and I saved data in Big Query too to be able to plug in visualization tool like Power BI or Data Studio.
 
-*Orchestration* : Still cloud scheduler
+**Orchestration** : Still cloud scheduler
 
 For enriching the data with ML, I used my own laptop with Docker as I found the AI platform not so practical and costly to run exploratory analysis: I downloaded part of the data on my laptop. |
 
 |Serving | Serve the data for the end users. This was done with a dashboard but also wanted to have a webApp to consult the output of the ML prediction on the go. |
 
-*Language*: Still Python
-*Compute*: used Big Query as the warehouse for adhoc queries and for the underlying dashboard. For the webAPI I used Cloud Run for its ability to scale down to zero and a Redis Database for holding the latest time series for the bike station (with Redis free tier).|
+**Language**: Still Python
+**Compute**: used Big Query as the warehouse for adhoc queries and for the underlying dashboard. For the webAPI I used Cloud Run for its ability to scale down to zero and a Redis Database for holding the latest time series for the bike station (with Redis free tier).|
  
 
 I had several cron schedulers, several cloud functions and a dataflow pipeline
