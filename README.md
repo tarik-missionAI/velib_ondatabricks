@@ -1,5 +1,7 @@
 # Data Pipelines rookie mistakes
 
+![velib](./ressources/velib.jpg)
+
 ## Quick background
 
 A few years ago, as I was trying to get hands-on exposure to cloud technologies, I decided to develop a data pipeline on the google cloud platform. Rather than trying numerous sanitized tutorials, I picked up a project that would be useful for me and see how I would implement it end to end.
