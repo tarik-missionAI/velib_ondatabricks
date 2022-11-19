@@ -45,12 +45,15 @@ The architecture looks like below and the code is available on github here. As f
 
 I used Databricks Auto Loader to ingest files. This process automates file discovery, ingesting only the newly arrived files. Moving from Parquet to Delta as a table format brought performance and automation. The automatic metadata construction with Delta adds indexes that bring query performance without relying solely on partition. Databricks runtime automated compaction and kept natural sort order which is perfect for this time series. Finally, Delta Live Table facilitated orchestration by allowing the addition of quality criteria, merge patterns, lineage and cluster management with autoscaling for example.
 
+![dlt pipeline](./ressources/dlt_pipeline.png)
 
 The pipeline ingests data incrementally and we can run it as batch or streaming, on regular or preemptible instances to reduce cost. We can selectively refresh tables and the autoscaling facilitates cluster management as well as cost.
 
 Finally, thanks to the LakeHouse architecture, the tables are stored and structured on google storage with the catalog being available on the databricks metastore. From there we can share it with simple `GRANT SELECT` and add on with ML and BI all from storage location based on an open format.
 
 We can actually connect to PowerBI and use the forecasted value to get more insight
+
+![databricks sql dashboard](./ressources/dashboard.png)
 
 
 ## Lessons learnt
