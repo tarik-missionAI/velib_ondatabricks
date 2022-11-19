@@ -20,11 +20,11 @@ The blocks of my architecture are pretty standard for any analytics platform:
 
 Across that pipeline you would add security, orchestration and governance. I can summarize it on the block diagram below.
 
-![blog diagram](./ressources/Pipeline_101-Page-2.drawio.png)
+![blog diagram](./ressources/pipeline101.png)
 
 In my case, I tried to keep it simple. In terms of security and governance, I used the GCP encryption and since I was the only user, I had no further security or governance. I had full access to all resources.
 
-![blog diagram](./ressources/Pipeline_101-GCP native.drawio.png)
+![blog diagram](./ressources/pipeline101_gcp_native.png)
 
 Now: how have I implemented it? I had a few constraints as mentioned above. I needed long running and as cheap as possible while testing the technologies that the cloud had to offer. I decided to go with GCP as this was the platform we were using at work at the time. I summarized my thought process in the table below and the result in the diagram below.
 
@@ -41,7 +41,7 @@ I had several cron schedulers, several cloud functions and a dataflow pipeline
 Recently , as the cost of the setup started to creep-up, I decided to see if there was a more modern and simple way to do it. Bonus points would be if I could deploy on different clouds if necessary. As I am familiar with Databricks, I did the exercise. I could have my storage in open source decoupled from the computer, I would have governance and orchestration for free. And I could also run my ML directly on the data in the cloud while benefiting from the MLOps part for free.
 The architecture looks like below and the code is available on github here. As for the API I hesitated between Cloud Functions and a tiny VM.
 
-![blog diagram](./ressources/Pipeline_101-Databricks on GCP (1).drawio.png)
+![blog diagram](./ressources/pipeline101_databricks_ongcp.png)
 
 I used Databricks Auto Loader to ingest files. This process automates file discovery, ingesting only the newly arrived files. Moving from Parquet to Delta as a table format brought performance and automation. The automatic metadata construction with Delta adds indexes that bring query performance without relying solely on partition. Databricks runtime automated compaction and kept natural sort order which is perfect for this time series. Finally, Delta Live Table facilitated orchestration by allowing the addition of quality criteria, merge patterns, lineage and cluster management with autoscaling for example.
 
