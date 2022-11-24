@@ -1,6 +1,6 @@
 # Data Pipelines rookie mistakes
 
-![velib](./ressources/velib.jpg)
+![velib](ressources/velib.jpg)
 
 ## Quick background
 

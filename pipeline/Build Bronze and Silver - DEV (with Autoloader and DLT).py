@@ -182,7 +182,10 @@ def ingest_snapshot():
 @pandas_udf('struct<`mechanical`:int,`ebike`:int>')
 def parse_biketype(content:pd.Series) -> pd.DataFrame:
     def parse_array(bike_list):
-        return {i:j for json_dict in bike_list for i,j in json_dict.items() if j}
+        parsed_dict = {i:j for json_dict in bike_list for i,j in json_dict.items() if j is not None}
+        if parsed_dict =={}:
+            parsed_dict = {'mechanical': None, 'ebike': None}
+        return parsed_dict
     output = content.apply(parse_array)
     return pd.DataFrame.from_records(output)
 
@@ -222,8 +225,6 @@ def parse_snapshot():
             .select('*','stations.*').drop('stations')
             .withColumn('num_bikes_available_types_parsed', parse_biketype(F.col('num_bikes_available_types')))
             .select('*', 'num_bikes_available_types_parsed.*')
-            .withColumn('mechanical', F.coalesce(F.col('mechanical'), F.lit(0)))
-            .withColumn('ebike', F.coalesce(F.col('ebike'), F.lit(0)))
             .withColumn('snapshot_timestamp_year', F.year('snapshot_timestamp'))
             .withColumn('snapshot_timestamp_month', F.month('snapshot_timestamp'))
             .withColumn('snapshot_timestamp_day', F.dayofmonth('snapshot_timestamp'))
