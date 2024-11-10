@@ -2,11 +2,6 @@
     "clusters": [
         {
             "label": "default",
-            "gcp_attributes": {
-                "use_preemptible_executors": true,
-                "google_service_account": "your-service-account@your-project.iam.gserviceaccount.com",
-                "availability": "PREEMPTIBLE_WITH_FALLBACK_GCP"
-            },
             "autoscale": {
                 "min_workers": 1,
                 "max_workers": 5,
@@ -17,7 +12,6 @@
     "development": false,
     "continuous": false,
     "channel": "PREVIEW",
-    "photon": true,
     "libraries": [
         {
             "notebook": {
@@ -31,7 +25,6 @@
         }
     ],
     "name": "ingest_velib",
-    "storage": "gs://your_bucket"
     "configuration": {
         "velib.inputPath_dbx": "gs://your_historian"
     },

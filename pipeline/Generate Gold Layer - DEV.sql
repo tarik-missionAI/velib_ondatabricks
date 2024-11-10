@@ -1,8 +1,8 @@
 -- Databricks notebook source
 -- MAGIC %md
--- MAGIC 
+-- MAGIC
 -- MAGIC # This notebook builds the Golden Layer for the velib Database
--- MAGIC 
+-- MAGIC
 -- MAGIC There are 2 tables that we can set for the golden layer. The station list that would represent the latest update of the historical view of the stations and the snapshot of all stations values.
 
 -- COMMAND ----------
